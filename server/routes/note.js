@@ -5,24 +5,25 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        const noteContent = req.body.note.content;
-        const noteTitle = req.body.note.title;
+        console.log('POST body:', req.body);
+        const { title, content, tag } = req.body.note;
 
-        if (!noteContent || !noteTitle) {
-            return res.status(400).json({ message: 'Содержимое и заголовок заметки не могут быть пустыми' });
+        if (!content || !title || !tag) {
+            return res.status(400).json({ message: 'Вміст, заголовок і тег нотатки не можуть бути порожніми' });
         }
-
+        
         if (!user) {
-            return res.status(404).json({ message: 'Пользователь не найден' });
+            return res.status(404).json({ message: 'Користувача не знайдено' });
         }
 
-        user.notes.push({ title: noteTitle, content: noteContent });
+        user.notes.push({ title, content, tag });
         await user.save();
 
-        res.status(201).json({ message: 'Заметка успешно добавлена', note: { title: noteTitle, content: noteContent } });
+        const addedNote = user.notes[user.notes.length - 1]; 
+        res.status(201).json({ message: 'Нотатку успішно додано', note: addedNote });
     } catch (err) {
-        console.error('Ошибка добавления заметки:', err);
-        res.status(500).json({ message: 'Ошибка добавления заметки' });
+        console.error('Помилка додавання нотатки:', err);
+        res.status(500).json({ message: 'Помилка додавання нотатки' });
     }
 });
 
@@ -30,12 +31,12 @@ router.get('/notes', async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
         if (!user) {
-            return res.status(404).json({ message: 'Пользователь не найден' });
+            return res.status(404).json({ message: 'Користувача не знайдено' });
         }
         res.json({ notes: user.notes });
     } catch (err) {
-        console.error('Ошибка при получении заметок:', err);
-        res.status(500).json({ message: 'Ошибка при получении заметок' });
+        console.error('Помилка при отриманні нотаток:', err);
+        res.status(500).json({ message: 'Помилка при отриманні нотаток' });
     }
 });
 
@@ -44,39 +45,39 @@ router.put('/:noteId', async (req, res) => {
     console.log('Note ID:', req.params.noteId);
     const { noteId } = req.params; 
     const { note } = req.body;
-    const { title, content } = note || {};
+    const { title, content, tag } = note || {};
 
-    if (!title || !content) {
-        return res.status(400).json({ message: 'Заголовок и содержимое не могут быть пустыми' });
+    if (!title || !content || !tag) {
+        return res.status(400).json({ message: 'Заголовок, вміст і тег не можуть бути порожніми' });
     }
 
     try {
         const user = await User.findById(req.user._id);
         if (!user) {
-            return res.status(404).json({ message: 'Пользователь не найден' });
+            return res.status(404).json({ message: 'Користувача не знайдено' });
         }
 
         const noteItem = user.notes.id(noteId);
         if (!noteItem) {
-            return res.status(404).json({ message: 'Заметка не найдена' });
+            return res.status(404).json({ message: 'Нотатку не знайдено' });
         }
 
         noteItem.title = title;
         noteItem.content = content;
+        noteItem.tag = tag;
         await user.save();
 
-        res.json({ message: 'Заметка обновлена', note: noteItem });
+        res.json({ message: 'Нотатку оновлено', note: noteItem });
     } catch (err) {
-        console.error('Ошибка при обновлении заметки:', err);
-        res.status(500).json({ message: 'Ошибка при обновлении заметки' });
+        console.error('Помилка при оновленні нотатки:', err);
+        res.status(500).json({ message: 'Помилка при оновленні нотатки' });
     }
 });
-
 
 router.delete('/:noteId', async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        if (!user) return res.status(404).json({ message: 'Пользователь не найден' });
+        if (!user) return res.status(404).json({ message: 'Користувача не знайдено' });
 
         const noteId = req.params.noteId;
 
@@ -87,10 +88,10 @@ router.delete('/:noteId', async (req, res) => {
         user.notes = user.notes.filter(note => note._id.toString() !== noteId);
 
         await user.save();
-        res.status(200).json({ message: 'Заметка удалена' });
+        res.status(200).json({ message: 'Нотатку видалено' });
     } catch (err) {
-        console.error('Ошибка удаления заметки:', err);
-        res.status(500).json({ message: 'Ошибка удаления заметки' });
+        console.error('Помилка видалення нотатки:', err);
+        res.status(500).json({ message: 'Помилка видалення нотатки' });
     }
 });
 

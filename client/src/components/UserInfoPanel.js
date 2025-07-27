@@ -8,11 +8,11 @@ const UserInfoPanel = ({ username, onLogout }) => {
     <div className="user-info">
       {username ? (
         <>
-          <p>Вы вошли как: <strong>{username}</strong></p>
-          <button className="logout-btn" onClick={onLogout}>Выйти</button>
+          <p>Ви зайшли як: <strong>{username}</strong></p>
+          <button className="logout-btn" onClick={onLogout}>Вийти</button>
         </>
       ) : (
-        <button className="login-btn" onClick={() => navigate('/')}>Войти</button>
+        <button className="login-btn" onClick={() => navigate('/')}>Увійти</button>
       )}
     </div>
   );

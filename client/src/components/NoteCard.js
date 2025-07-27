@@ -1,26 +1,29 @@
 import React from 'react';
 
 const NoteCard = ({
-  note, isEditing, editingTitle, editingContent,
+  note, isEditing, editingTitle, editingContent, editingTag,
   onEdit, onDelete, onSave, onCancel,
-  onTitleChange, onContentChange, onSummarize
+  onTitleChange, onContentChange, onTagChange, onSummarize
 }) => (
   <div className="note-card">
     {isEditing ? (
       <>
         <input type="text" value={editingTitle} onChange={onTitleChange} />
         <textarea value={editingContent} onChange={onContentChange} />
-        <button onClick={onSave}>Сохранить</button>
-        <button onClick={onCancel}>Отмена</button>
+        <input type="text" value={editingTag} onChange={onTagChange} />
+        <button onClick={onSave}>Зберегти</button>
+        <button onClick={onCancel}>Скасувати</button>
       </>
     ) : (
       <>
         <h3>{note.title}</h3>
         <p>{note.content}</p>
-        <p>{note.summary}</p>
-        <button onClick={() => onEdit(note)}>Редактировать</button>
-        <button onClick={() => onDelete(note._id)}>Удалить</button>
-        <button onClick={() => onSummarize(note.content, note._id)}>Сделать резюме</button>
+        {note.summary && <p><strong>Резюме:</strong> {note.summary}</p>}
+        <p><strong>Тег:</strong> {note.tag}</p>
+        <p><strong>Создано:</strong> {new Date(note.createdAt).toLocaleString()}</p>
+        <button onClick={() => onEdit(note)}>Редагувати</button>
+        <button onClick={() => onDelete(note._id)}>Видалити</button>
+        <button onClick={() => onSummarize(note.content, note._id)}>Зробити резюме</button>
       </>
     )}
   </div>

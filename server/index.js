@@ -13,8 +13,8 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+.then(() => console.log('MongoDB підключено'))
+.catch(err => console.error('MongoDB підключення помилка:', err));
 
 app.use(cors());
 app.use(express.json());
@@ -23,10 +23,10 @@ app.use('/api/note', passport.authenticate('jwt', { session: false }), noteRoute
 app.use('/api/auth', authRoutes);
 app.use('/api/summarize', summarizeRoutes);
 app.get('/', (req, res) => {
-  res.send('Running without problems');
+  res.send('Сервер працює без проблем');
 });
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`Сервер запущено на порту ${PORT}`);
 });

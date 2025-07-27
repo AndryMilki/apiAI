@@ -14,12 +14,12 @@ passport.use(new LocalStrategy(
   async (req, username, password, done) => {
     try {
       const user = await User.findOne({ username });
-      
-      if (!user) return done(null, false, { message: 'Пользователь не найден' });
-      
+
+      if (!user) return done(null, false, { message: 'Користувача не знайдено' });
+
       const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return done(null, false, { message: 'Неверный пароль' });
-      
+      if (!isMatch) return done(null, false, { message: 'Невірний пароль' });
+
       return done(null, user);
     } catch (err) {
       return done(err);

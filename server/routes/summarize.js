@@ -12,11 +12,11 @@ router.post('/', async (req, res) => {
                 messages: [
                     {
                         role: 'system',
-                        content: 'Ты помощник, который помогает пользователям создавать резюме из заметок.'
+                        content: 'Ти помічник, який допомагає користувачам створювати короткий виклад з нотаток.'
                     },
                     {
                         role: 'user',
-                        content: `Сделай краткое резюме из следующей заметки: ${noteText}`
+                        content: `Зроби короткий виклад з наступної нотатки: ${noteText}`
                     }
                 ]
             },
@@ -30,8 +30,8 @@ router.post('/', async (req, res) => {
         const summary = response.data.choices[0].message.content;
         res.json({summary});
     }catch (error) {
-        console.error('Ошибка при вызове OpenRouter API:', error);
-        return res.status(500).json({message: 'Ошибка при создании резюме'});
+        console.error('Помилка при виклику OpenRouter API:', error);
+        return res.status(500).json({message: 'Помилка при створенні резюме'});
     }
 });
 

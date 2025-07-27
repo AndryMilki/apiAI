@@ -42,7 +42,7 @@ function AuthClient() {
                 setForm({ ...form, password: '', confirmPassword: '' });
             }
         } catch (err) {
-            const errorMsg = err.response?.data?.message || err.message || 'An error occurred';
+            const errorMsg = err.response?.data?.message || err.message || 'Сталась помилка';
             setMessage(errorMsg);
         } finally {
             setLoading(false);
@@ -62,18 +62,18 @@ function AuthClient() {
             <main className='main-content'>
                 <div className="auth-panel">
                     <div className="auth-form">
-                        <h2>{isLogin ? 'Login' : 'Register'}</h2>
+                        <h2>{isLogin ? 'Логін' : 'Реєстрація'}</h2>
                         <form onSubmit={handleSubmit}>
-                            <input type="text" name="username" placeholder="Username" value={form.username} onChange={handleChange} required />
-                            {!isLogin && <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />}
-                            <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
-                            {!isLogin && <input type="password" name="confirmPassword" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} required />}
-                            <button type="submit" disabled={loading}>{loading ? 'Loading...' : isLogin ? 'Login' : 'Register'}</button>
+                            <input type="text" name="username" placeholder="Ім'я користувача" value={form.username} onChange={handleChange} required />
+                            {!isLogin && <input type="email" name="email" placeholder="Електронна пошта" value={form.email} onChange={handleChange} required />}
+                            <input type="password" name="password" placeholder="Пароль" value={form.password} onChange={handleChange} required />
+                            {!isLogin && <input type="password" name="confirmPassword" placeholder="Підтвердження пароля" value={form.confirmPassword} onChange={handleChange} required />}
+                            <button type="submit" disabled={loading}>{loading ? 'Завантаження...' : isLogin ? 'Увійти' : 'Зареєструватися'}</button>
                         </form>
                         {message && <p className="message">{message}</p>}
                         <div className = 'switch-wrapper'>
                             <button className="toggle-mode" onClick={toggleMode}>
-                                {isLogin ? 'Switch to Register' : 'Switch to Login'}
+                                {isLogin ? 'Перейти до реєстрації' : 'Перейти до входу'}
                             </button>
                         </div>
                     </div>

@@ -16,7 +16,7 @@ export const useNotes = (token) => {
         headers: { Authorization: `Bearer ${token}` }
       });
     }).then(res => setNotes(res.data.notes))
-      .catch(() => setError('Ошибка авторизации'));
+      .catch(() => setError('Помилка авторизації або отримання нотаток'));
   }, [token]);
 
   return { notes, setNotes, username, setUsername, error, setError };
